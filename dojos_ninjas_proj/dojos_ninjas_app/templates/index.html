@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dojos and Ninjas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+    <div id="outline">
+        <div id="box1">
+
+
+            <div id="box">
+                <form action="dojo/create" method="post">
+                    <h3>Add a Dojo</h3>
+                    {%  csrf_token %}
+                    <p>
+                        Name:
+                        <input type="text" name="name" id="">
+                    </p>
+                    <p>
+                        City:
+                        <input type="text" name="city" id="">
+                    </p>
+                    <p>
+                        State:
+                        <input type="text" name="state" id="">
+                    </p>
+                    <button>Add</button>
+                </form>
+            </div>
+
+
+            <div id="box">
+                <form action="ninja/create" method="post">
+                    <h3>Add a User</h3>
+                    {%  csrf_token %}
+                    <p>
+                        First Name:
+                        <input type="text" name="first_name" id="">
+                    </p>
+                    <p>
+                        Last Name:
+                        <input type="text" name="last_name" id="">
+                    </p>
+                    <p>
+                        Dojo: 
+                        <select name="dojo_id">
+                            {% for dojo in dojos %}
+                                <option value="{{ dojo.id }}">{{ dojo.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <button>Add</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div id="container">
+            <h3>All the Dojos</h3>
+            <div id="list">
+                    {% for dojo in dojos %} 
+                            {% for ninja in dojo.ninjas.all %}
+                                    
+                            {% endfor%}
+                            <p>{{ dojo.name }} - {{ dojo.ninjas.count }} <a href="/dojo/{{ dojo.id }}/delete">Delete</a></p> 
+                            <ul>
+                                {% for ninja in dojo.ninjas.all %}
+                                    <li>{{ ninja.first_name }} {{ ninja.last_name }}</li>
+                                {% endfor%}
+                            </ul>
+                    {% endfor%}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
